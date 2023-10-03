@@ -34,13 +34,13 @@ exports.findAll = async (req, res, next) => {
 
 
 exports.findOne = async (req, res, next) => {
-    // res.send({message: "findOne handler"});
     try {
         const contactService = new ContactService(MongoDB.client);
         const document = await contactService.findById(req.params.id);
         if(!document){
             return next(new ApiError(404,"Contact not found"));
         }
+        return res.send(document);
     } catch (error) {
         return next(new ApiError(500, 'Error retrieving contact'));
     }
@@ -48,7 +48,6 @@ exports.findOne = async (req, res, next) => {
 
 
 exports.update = async (req, res, next) => {
-    // res.send({message: "update handler"});
     if (Object.keys(req.body).length === 0) {
         return next(new ApiError(400, 'Data to update can not be empty'));
     }
@@ -65,7 +64,6 @@ exports.update = async (req, res, next) => {
 }
 
 exports.delete = async (req, res, next) => {
-    // res.send({message: "delete handler"});
     try {
         const contactService = new ContactService(MongoDB.client);
         const document = await contactService.delete(req.params.id);
